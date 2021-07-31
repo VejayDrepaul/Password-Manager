@@ -7,11 +7,12 @@ def menu():
     print("-------------Menu-------------");
     print("\n");
     print("1. Enter an account to be stored in the database");
-    print("2. Find a account information for a site or app");
-    print("3. Change account information in database");
-    print("4. Delete an account from the database");
-    print("5. Generate a password for an account");
-    print("6. Exit");
+    print("2. Find account information for a specific site or app");
+    print("3. List all accounts")
+    print("4. Change account information in database");
+    print("5. Delete an account from the database");
+    print("6. Generate a password for an account");
+    print("7. Exit");
     option = int(input("\nWhat do you want to do: "))
 
     if option == 1:
@@ -22,6 +23,8 @@ def menu():
         password = input("What is the password for your account: ")
 
         store_new_account(website_name, link, username, email, password)
+    elif option == 3:
+        list_accounts()
 
 
 def login():
