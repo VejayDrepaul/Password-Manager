@@ -1,2 +1,4 @@
 database.ini
 .env
+passwords.csv
+passwords.xlsx
