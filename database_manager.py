@@ -7,7 +7,7 @@ def connect():
         params = config()
         connection = psycopg2.connect(**params)
         return connection
-    except (Exception, psycopg2.DatabaseError) as error:
+    except(Exception, psycopg2.DatabaseError) as error:
         print(error)
 
 
@@ -38,7 +38,7 @@ def find_accounts():
     except(Exception, psycopg2.Error) as error:
         print(error)
 
-#@071580Sg&Vd!
+
 def list_accounts():
     try:
         connection = connect()
@@ -47,6 +47,17 @@ def list_accounts():
         connection.commit()
         result = cursor.fetchall()
         print(result)
+    except(Exception, psycopg2.Error) as error:
+        print(error)
+
+
+def delete_account(account_name):
+    try:
+        connection = connect()
+        cursor = connection.cursor()
+        delete = f"DELETE FROM accountlog WHERE appname = '{account_name}'"
+        cursor.execute(delete)
+        connection.commit()
     except(Exception, psycopg2.Error) as error:
         print(error)
 
