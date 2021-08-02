@@ -5,7 +5,6 @@ from config import config
 def connect():
     try:
         params = config()
-        print("\nConnecting to PostgreSQL database...")
         connection = psycopg2.connect(**params)
         return connection
     except (Exception, psycopg2.DatabaseError) as error:
@@ -24,6 +23,22 @@ def store_new_account(app_name, url, username, email, password):
         print(error)
 
 
+def find_accounts():
+    try:
+        connection = connect()
+        cursor = connection.cursor()
+        website_name = input("What is the name of the website or app for the account: ")
+        print("\n")
+        print("Account Information:")
+        find = """ SELECT * FROM accountlog WHERE appname = '""" + website_name + "'"
+        cursor.execute(find, website_name)
+        connection.commit()
+        result = cursor.fetchone()
+        print(result)
+    except(Exception, psycopg2.Error) as error:
+        print(error)
+
+#@071580Sg&Vd!
 def list_accounts():
     try:
         connection = connect()
@@ -32,5 +47,31 @@ def list_accounts():
         connection.commit()
         result = cursor.fetchall()
         print(result)
+    except(Exception, psycopg2.Error) as error:
+        print(error)
+
+
+def csv():
+    try:
+        connection = connect()
+        cursor = connection.cursor()
+        f_output = open('passwords.csv', 'w')
+        b = "COPY (SELECT * FROM accountlog) TO STDOUT WITH CSV HEADER"
+        t_path = "passwords.csv"
+        with open(t_path, 'w') as f_output:
+            cursor.copy_expert(b, f_output)
+    except(Exception, psycopg2.Error) as error:
+        print(error)
+
+
+def xlsx():
+    try:
+        connection = connect()
+        cursor = connection.cursor()
+        f_output = open('passwords.xlsx', 'w')
+        b = "COPY (SELECT * FROM accountlog) TO STDOUT WITH CSV HEADER"
+        t_path = "passwords.xlsx"
+        with open(t_path, 'w') as f_output:
+            cursor.copy_expert(b, f_output)
     except(Exception, psycopg2.Error) as error:
         print(error)
