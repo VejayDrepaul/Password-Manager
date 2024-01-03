@@ -9,20 +9,25 @@ import javax.swing.JTextField;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginPage extends JFrame {
+    public static LoginPage instance = null;
     private JTextField usernameField;
     private JPasswordField passwordField;
-    
-    public LoginPage() {
+    private static final Image icon = Toolkit.getDefaultToolkit().getImage("Project Resources\\icon.png");
+
+    private LoginPage() {
         this.setTitle("Login - Password Manager");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(900, 600);
         this.setLayout(new GridBagLayout());
         this.setResizable(false);
+        this.setIconImage(icon);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -59,6 +64,13 @@ public class LoginPage extends JFrame {
         this.add(loginButton, gbc);
 
         this.setLocationRelativeTo(null);
+    }
+
+    public static LoginPage getInstance() {
+        if (instance == null) 
+            instance = new LoginPage();
+
+        return instance;
     }
 
     public void CheckCredential() {
