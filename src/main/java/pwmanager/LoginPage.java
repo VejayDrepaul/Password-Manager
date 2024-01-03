@@ -1,5 +1,8 @@
 package pwmanager;
 
+import pwmanager.DatabaseOperations;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -9,9 +12,7 @@ import javax.swing.JTextField;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,7 +20,7 @@ public class LoginPage extends JFrame {
     public static LoginPage instance = null;
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private static final Image icon = Toolkit.getDefaultToolkit().getImage("Project Resources\\icon.png");
+    private final ImageIcon icon = new ImageIcon("C:\\Users\\drepa\\Development\\password-manager\\src\\main\\resources\\icon.png"); 
 
     private LoginPage() {
         this.setTitle("Login - Password Manager");
@@ -27,7 +28,7 @@ public class LoginPage extends JFrame {
         this.setSize(900, 600);
         this.setLayout(new GridBagLayout());
         this.setResizable(false);
-        this.setIconImage(icon);
+        this.setIconImage(this.icon.getImage());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -60,7 +61,7 @@ public class LoginPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 CheckCredential();
             }
-        });
+        }); 
         this.add(loginButton, gbc);
 
         this.setLocationRelativeTo(null);
@@ -73,14 +74,19 @@ public class LoginPage extends JFrame {
         return instance;
     }
 
-    public void CheckCredential() {
-        String username = usernameField.getText();
-        String password = new String(passwordField.getPassword());
-
-        if ("yourUsername".equals(username) && "yourPassword".equals(password)) {
+    
+    private void CheckCredential() {
+        DatabaseOperations dbOP = new DatabaseOperations();
+        String user = usernameField.getText();
+        char[] password = passwordField.getPassword();
+        String pass = new String(password);
+        
+        if (dbOP.login(user, pass)) {
             this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            System.out.println("Incorrect credentials entered");
+            JOptionPane.showMessageDialog(this, "Did not enter the right credentials");
         }
     }
 }
