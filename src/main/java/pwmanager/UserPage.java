@@ -40,6 +40,7 @@ public class UserPage extends JFrame {
 
         // Create a JTable with the DefaultTableModel
         this.table = new JTable(tableModel);
+        dbMan.populateTable(tableModel);
 
         // Add the JTable to a JScrollPane for scrolling
         JScrollPane scrollPane = new JScrollPane(table);
@@ -58,7 +59,7 @@ public class UserPage extends JFrame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dbMan.deleteAccount(getName());
+                DeletePage deletePage = DeletePage.getInstance();
             }
         });
 
