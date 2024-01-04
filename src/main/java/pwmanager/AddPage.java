@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,6 +15,7 @@ import javax.swing.JTextField;
 
 public class AddPage extends JFrame{
     public static AddPage instance = null;
+    private final ImageIcon icon = new ImageIcon("C:\\Users\\drepa\\Development\\password-manager\\src\\main\\resources\\icon.png"); 
 
     public static AddPage getInstance() {
         if (instance == null)
@@ -23,10 +25,11 @@ public class AddPage extends JFrame{
     }
     
     private AddPage() {
-        setTitle("Account Details");
-        setSize(400, 300);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+        this.setTitle("Account Details");
+        this.setSize(400, 300);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setIconImage(this.icon.getImage());
+        
         // Create labels and textboxes
         JLabel accountLabel = new JLabel("Account:");
         JLabel usernameLabel = new JLabel("Username:");
@@ -40,12 +43,6 @@ public class AddPage extends JFrame{
 
         // Create Submit button
         JButton submitButton = new JButton("Submit");
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddPage add = AddPage.getInstance();
-            }
-        });
 
         // Set layout manager to BorderLayout
         setLayout(new BorderLayout());

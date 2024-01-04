@@ -1,6 +1,10 @@
 package pwmanager;
 
-import pwmanager.DatabaseOperations;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -9,12 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LoginPage extends JFrame {
     public static LoginPage instance = null;
@@ -76,13 +74,15 @@ public class LoginPage extends JFrame {
 
     
     private void CheckCredential() {
-        DatabaseOperations dbOP = new DatabaseOperations();
+        DatabaseOperations dbOP = DatabaseOperations.getInstance();
         String user = usernameField.getText();
         char[] password = passwordField.getPassword();
         String pass = new String(password);
         
         if (dbOP.login(user, pass)) {
             this.dispose();
+            UserPage userPage = UserPage.getInstance();
+            userPage.setVisible(true);
         }
         else {
             System.out.println("Incorrect credentials entered");

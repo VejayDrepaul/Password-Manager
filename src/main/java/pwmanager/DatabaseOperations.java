@@ -1,10 +1,20 @@
 package pwmanager;
 
-import pwmanager.Config;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class DatabaseOperations {
+    public static DatabaseOperations instance = null;
     private Connection dbConn;
+
+    public static DatabaseOperations getInstance() {
+        if (instance == null)
+            instance = new DatabaseOperations();
+
+        return instance;
+    }
 
     public boolean login(String username, String password) {
         Config conn = new Config();
