@@ -5,15 +5,17 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class AddPage extends JFrame{
+public class AddPage extends JFrame {
     public static AddPage instance = null;
     private final ImageIcon icon = new ImageIcon("C:\\Users\\drepa\\Development\\password-manager\\src\\main\\resources\\icon.png"); 
 
@@ -25,7 +27,7 @@ public class AddPage extends JFrame{
     }
     
     private AddPage() {
-        this.setTitle("Account Details");
+        this.setTitle("Add Account - Password Manager");
         this.setSize(400, 300);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setIconImage(this.icon.getImage());
@@ -43,9 +45,29 @@ public class AddPage extends JFrame{
 
         // Create Submit button
         JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String account = accountTextField.getText();
+                String user = usernameTextField.getText();
+                String pass = passwordTextField.getText();
+                String notes = notesTextField.getText();
+
+                PasswordHasher hasher = new PasswordHasher();
+                String hashedPass = hasher.hashPassword(pass);
+
+                DatabaseOperations dbMan = DatabaseOperations.getInstance();
+                if (dbMan.addAccounts(account, user, pass, notes, hashedPass)) {
+                    added();
+                }
+                else {
+                    notCompleted();
+                }
+            }
+        });
 
         // Set layout manager to BorderLayout
-        setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
 
         // Create panel for labels and textboxes
         JPanel panel = new JPanel();
@@ -60,13 +82,21 @@ public class AddPage extends JFrame{
         panel.add(notesTextField);
 
         // Add panel to the content pane
-        getContentPane().add(panel, BorderLayout.CENTER);
+        this.getContentPane().add(panel, BorderLayout.CENTER);
 
         // Add Submit button to the bottom-right corner
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(submitButton);
-        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+        this.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
-        setVisible(true);
+        this.setVisible(true);
     }   
+
+    public void added() {
+        JOptionPane.showMessageDialog(this, "Account Added");
+    }
+
+    public void notCompleted() {
+        JOptionPane.showMessageDialog(this, "Could not add account");
+    }
 }
